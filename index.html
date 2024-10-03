@@ -138,10 +138,12 @@ the 100ths place */
 function showMoney(value) {
         value = Math.round(value * 100) / 100;
         //If value has no single digit cent value, it appends a zero to the end
-        if(((value * 100) % 10 == 0)){
+        if (value == 0) {
+                //handles 0 case
+                return "0.00";
+        } else if (((value * 100) % 10 == 0)) {
                 return value.toString() + "0";
-        }
-        else{
+        } else {
                 return value.toString();
         }
 }
