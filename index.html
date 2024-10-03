@@ -1,39 +1,61 @@
 <!DOCTYPE html>
 <style>
-        .oneliner {
-                color: #000000;
-                font-size: 35px;
-                padding: 30px;
-        }
-
-        .bodyline {
-                color: #000000;
-                float: right;
-                width: 60%;  
-                margin-top: 90px;
-                margin-right: 15px;
-                background-color: #034485;
-                display: inline-block;
-                border-radius: 25px;
-                padding: 15px 7px;
-        }
-
-        .container {
+        .bannerContainer {
                 position: relative;
                 text-align: center;
+                size: auto;
                 color: #FFFFFF;
         }
         .centered {
                 position: absolute;
-                top: 30%;
+                top: 17%;
                 left: 50%;
                 transform: translate(-50%, -50%);
         }
         .cparagraph {
                 position: absolute;
-                top: 50%;
+                top: 37%;
                 left: 50%;
                 transform: translate(-50%, -50%);
+        }
+        .imageContainer {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 50px;   
+        }
+        .foodDisplay {
+                color: #000000;
+                justify-content: center;
+                vertical-align: middle;
+        }
+        .foodDisplay h3 {
+                text-align: center;
+                width: 370px;
+        }
+        .foodDisplay img {
+                height: 333px;
+                border-radius: 25px;
+                margin: 5px;
+        }
+        .foodDisplay p {
+                text-align: center;
+                width: 350px;
+        }
+        .priceBody{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 50px;
+        }
+        .priceTotal{
+                background-color: #FFFFFF;
+                display: inline-block;
+                border-radius: 25px;
+                padding: 10px 7px;
+                width: 50%;
+                outline: 2px solid #000000;
+                color: #000000;
         }
 
 </style>
@@ -53,7 +75,7 @@
         </header>
 
         <body>
-                <div class="container">
+                <div class="bannerContainer">
                         <img src="bannerdog.jpg" alt="Banner Image" class="banner-img" style="width: 100%;">
                         <div class="centered">
                                 <h1 style="font-size: 70px;">Joe's Hot Dog Stand</h1>
@@ -62,8 +84,42 @@
                                 <h2 style="font-size: 40px;">The best Dog in Town</h2>
                         </div>
                 </div>
-                <div class="oneliner">
-                        <h2>Annoy your friends! Forever...</h2>
+
+                <div class="imageContainer">
+                        <div class="foodDisplay">
+                                <h3>Joe's Famous Hot Dog's ($4.80)</h3>
+                                <img src="hotdogs.jpg" alt="hotdog">
+                                <p>Joe has been perfecting his Hot Dog recipe for over 20 years,
+                                        handcrafting each Hot Dog into perfection!
+                                </p>
+                        </div>
+                        <div class="foodDisplay">
+                                <h3>Joe's Crispy French Fries ($3.95)</h3>
+                                <img src="fries.jpg" alt="Fries">
+                                <p>Our Crispy French Fries is always a delight, complementing 
+                                        Joe's Famous Hot Dogs with every crispy bite!
+                                </p>
+                        </div>
+                        <div class="foodDisplay">
+                                <h3>Joe's Drink ($1.95)</h3>
+                                <img src="newsoda.jpg" alt="Drink">
+                                <p>Joe's Drink is essentially every soda mixed together.
+                                        It's actually way better then it sounds! </p>
+                        </div>
+                </div>
+
+                <div class="priceBody">
+                        <div class="priceTotal">
+                                <h1>Total Price</h1>
+                                <p id="hotDogs">Hot Dogs: </p>
+                                <p id="fries">French Fries: </p>
+                                <p id="drinks">Drinks: </p>
+                                <p id="initSum">Subtotal: </p>
+                                <p id="discount">Discount: </p>
+                                <p id="disSum">Post-Discount Sum: </p>
+                                <p id="taxes">Taxes: </p>
+                                <p id="totalSum">Total Sum: </p>
+                        </div>
                 </div>
                 <footer>
                         Disclaimer this is site for a class <br>
@@ -72,3 +128,70 @@
         </body>
 
 </html>
+
+<script>
+
+//Functions used by script
+
+/*showMoney() converts floating value into string rounded to
+the 100ths place */
+function showMoney(value) {
+        value = Math.round(value * 100) / 100;
+        //If value has no single digit cent value, it appends a zero to the end
+        if(((value * 100) % 10 == 0)){
+                return value.toString() + "0";
+        }
+        else{
+                return value.toString();
+        }
+}
+
+//Const prices (_p means price)
+        const hotdog_p = 4.80;
+        const fries_p = 3.95;
+        const drinks_p = 1.99;
+//Using window on Load and timer so page loads before prompt
+window.onload = function() {
+setTimeout(function() {
+        var numDogs = prompt("How many Hot Dogs would you like? ($4.80 each)");
+        var numFries = prompt("How many orders of French Fries do you want? ($3.95 each)");
+        var numSoda = prompt("How many Drinks would you like? ($1.99 each)");
+        //Using inputs and calculating total price of each item
+        var totDog_p, totFries_p, totDrin_p = 0;
+        totDog_p = (numDogs * hotdog_p);
+        totFries_p = (numFries * fries_p);
+        totDrin_p = (numSoda * drinks_p);
+        //Updating Indiviual prices on screen
+        document.getElementById('hotDogs').textContent += '(' + numDogs + ") x $" +
+        showMoney(hotdog_p) + " = $" + showMoney(totDog_p);
+
+        document.getElementById('fries').textContent += '(' + numFries + ") x $" +
+        showMoney(fries_p) + " = $" + showMoney(totFries_p);
+
+        document.getElementById('drinks').textContent += '(' + numSoda + ") x $" +
+        showMoney(drinks_p) + " = $" + showMoney(totDrin_p);
+
+        //Getting subtotal and other totals based on modifiers
+        var subtotal = totDog_p + totFries_p + totDrin_p;
+        //Display here
+        document.getElementById('initSum').textContent += " $" + showMoney(subtotal);
+        //Checking for discount
+        if(subtotal >= 25){
+                document.getElementById('discount').textContent += " $" + showMoney(subtotal * 0.1)
+                + " (You get 10% Off!)";
+                subtotal = subtotal * 0.9;
+                document.getElementById('disSum').textContent += " $" + showMoney(subtotal);
+        }
+        else{
+                document.getElementById('discount').textContent += " $0.00 (only for orders of $25 or more)";
+                document.getElementById('disSum').textContent += " $" + showMoney(subtotal);
+        }
+
+        //Applying taxes and showing full total
+        document.getElementById('taxes').textContent += " $" + showMoney(subtotal * 0.0625);
+        document.getElementById('totalSum').textContent += " $" + showMoney(subtotal * 1.0625);
+}, 500);
+        
+};
+</script>
+        
